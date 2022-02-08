@@ -53,11 +53,11 @@ class MyHomePageState extends State<MyHomePage> {
     // TODO request data model setup
     int orderId = Random().nextInt(1000);
     RequiredRequestData requiredRequestData = RequiredRequestData(
-      username: "sp_sandbox",
+      username: "username",
       password: "password",
       prefix: "prefix",
       currency: "BDT",
-      amount: 5,
+      amount: 1,
       orderId: "PPD$orderId",
       discountAmount: 0,
       discPercent: 0,
@@ -69,8 +69,8 @@ class MyHomePageState extends State<MyHomePage> {
       customerState: null,
       customerPostcode: null,
       customerCountry: null,
-      returnUrl: "https://www.sandbox.com/return_url",
-      cancelUrl: "https://www.sandbox.com/cancel_url",
+      returnUrl: "YourReturnUrl",
+      cancelUrl: "YourCancelUrl",
       clientIp: "ip",
       value1: null,
       value2: null,
