@@ -81,15 +81,15 @@ class MyHomePageState extends State<MyHomePage> {
     ShurjopaySdk shurjopaySdk = ShurjopaySdk(
       onSuccess: (BuildContext context, TransactionInfo transactionInfo) {
         // TODO you get success response, if the transection is succefully completed.
-        print("DEBUG_LOG_PRINT: onSuccess");
+        debugPrint("DEBUG_LOG_PRINT: onSuccess");
       },
       onFailed: (BuildContext context, String message) {
         // TODO you get failed response, if the transection is failed or canceled.
-        print("DEBUG_LOG_PRINT:onFailed: $message");
+        debugPrint("DEBUG_LOG_PRINT:onFailed: $message");
       },
       onInternetFailed: (BuildContext context, String message) {
         // TODO you get internet failed message, if the internet is not connected or on internet.
-        print("DEBUG_LOG_PRINT:onInternetFailed: $message");
+        debugPrint("DEBUG_LOG_PRINT:onInternetFailed: $message");
       },
     );
     // TODO payment request setup
