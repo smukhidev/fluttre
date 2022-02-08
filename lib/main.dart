@@ -19,6 +19,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: const MyHomePage(title: "Flutter Demo shurjoPaySDK"),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
@@ -61,7 +62,7 @@ class MyHomePageState extends State<MyHomePage> {
       discountAmount: 0,
       discPercent: 0,
       customerName: "customer name",
-      customerPhone: "01812166155",
+      customerPhone: "01xxxxxxxxx",
       customerEmail: null,
       customerAddress: "customer address",
       customerCity: "customer city",
