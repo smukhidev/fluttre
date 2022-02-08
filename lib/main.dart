@@ -61,7 +61,7 @@ class MyHomePageState extends State<MyHomePage> {
       discountAmount: 0,
       discPercent: 0,
       customerName: "customer name",
-      customerPhone: "01xxxxxxxxx",
+      customerPhone: "01812166155",
       customerEmail: null,
       customerAddress: "customer address",
       customerCity: "customer city",
