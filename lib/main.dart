@@ -49,6 +49,7 @@ class MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
+
   void onShurjopaySdk(BuildContext context) {
     // TODO request data model setup
     int orderId = Random().nextInt(1000);
@@ -79,24 +80,80 @@ class MyHomePageState extends State<MyHomePage> {
     );
     // TODO request response listener setup
     ShurjopaySdk shurjopaySdk = ShurjopaySdk(
-      onSuccess: (BuildContext context, TransactionInfo transactionInfo) {
-        // TODO you get success response, if the transection is succefully completed.
-        debugPrint("DEBUG_LOG_PRINT: onSuccess");
+      /// TODO you get success response, if the transection is succefully completed.
+      onSuccess: (BuildContext context, TransactionInfo? transactionInfo, ErrorSuccess errorSuccess) {
+        switch (errorSuccess.esType) {
+          case ESType.INTERNET_SUCCESS:
+            debugPrint(
+                "DEBUG_LOG_PRINT: surjoPay SDK SUCCESS: ${errorSuccess.message}");
+            return;
+          case ESType.SUCCESS:
+            onTransaction(transactionInfo);
+            return;
+        }
+        debugPrint(
+            "DEBUG_LOG_PRINT: surjoPay SDK SUCCESS: ${errorSuccess.esType.name}");
       },
-      onFailed: (BuildContext context, String message) {
-        // TODO you get failed response, if the transection is failed or canceled.
-        debugPrint("DEBUG_LOG_PRINT:onFailed: $message");
-      },
-      onInternetFailed: (BuildContext context, String message) {
-        // TODO you get internet failed message, if the internet is not connected or on internet.
-        debugPrint("DEBUG_LOG_PRINT:onInternetFailed: $message");
+
+      /// TODO you get failed response, if the transection is failed or canceled.
+      onFailed: (BuildContext context, ErrorSuccess errorSuccess) {
+        switch (errorSuccess.esType) {
+          case ESType.INTERNET_ERROR:
+            debugPrint(
+                "DEBUG_LOG_PRINT: surjoPay SDK ERROR: ${errorSuccess.message}");
+            return;
+          case ESType.HTTP_CANCEL:
+            debugPrint(
+                "DEBUG_LOG_PRINT: surjoPay SDK ERROR: ${errorSuccess.message}");
+            return;
+          case ESType.ERROR:
+            debugPrint(
+                "DEBUG_LOG_PRINT: surjoPay SDK ERROR: ${errorSuccess.message}");
+            return;
+        }
+        debugPrint(
+            "DEBUG_LOG_PRINT: surjoPay SDK ERROR: ${errorSuccess.message}");
       },
     );
     // TODO payment request setup
     shurjopaySdk.makePayment(
-      context:    context,
-      sdkType:    AppConstants.SDK_TYPE_SANDBOX, //TODO live/sandbox request
-      data:       requiredRequestData,
+      context: context,
+      sdkType: AppConstants.SDK_TYPE_SANDBOX, //TODO live/sandbox request
+      data: requiredRequestData,
     );
+  }
+
+  void onTransaction(TransactionInfo? transactionInfo) {
+    debugPrint("DEBUG_LOG_PRINT: surjoPay SDK SUCCESS TransactionInfo:");
+    transactionInfo?.onPrint();
+  }
+
+  RequiredRequestData get requestData {
+    RequiredRequestData requiredRequestData = RequiredRequestData(
+      username: "username",
+      password: "password",
+      prefix: "prefix",
+      currency: "currency",
+      amount: 1,
+      orderId: "order_id",
+      discountAmount: 0,
+      discPercent: 0,
+      customerName: "customer_name",
+      customerPhone: "customer_phone",
+      customerEmail: "customer_email",
+      customerAddress: "customer_address",
+      customerCity: "customer_city",
+      customerState: "customer_state",
+      customerPostcode: "customer_postcode",
+      customerCountry: "customer_country",
+      returnUrl: "return_url",
+      cancelUrl: "cancel_url",
+      clientIp: "client_ip",
+      value1: "value1",
+      value2: "value2",
+      value3: "value3",
+      value4: "value4",
+    );
+    return requiredRequestData;
   }
 }

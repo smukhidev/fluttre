@@ -90,9 +90,8 @@ RequiredRequestData requiredRequestData = RequiredRequestData(
 
 ```git_response_listener_setup
 // TODO response listener
-onSuccess:          (BuildContext context, TransactionInfo transactionInfo)
+onSuccess:          (BuildContext context, TransactionInfo transactionInfo, ErrorSuccess errorSuccess)
 onFailed:           (BuildContext context, String message)
-onInternetFailed:   (BuildContext context, String message)
 ```
 
 ### Response Listener Setup:
@@ -100,15 +99,12 @@ onInternetFailed:   (BuildContext context, String message)
 ```git_response_listener_setup
 // TODO request response listener setup
 ShurjopaySdk shurjopaySdk = ShurjopaySdk(
-    onSuccess: (BuildContext context, TransactionInfo transactionInfo) {
+    onSuccess: (BuildContext context, TransactionInfo transactionInfo, ErrorSuccess errorSuccess) {
         // TODO you get success response, if the transection is succefully completed.
     },
     onFailed: (BuildContext context, String message) {
         // TODO you get failed response, if the transection is failed or canceled.
-    },
-    onInternetFailed: (BuildContext context, String message) {
-        // TODO you get internet failed message, if the internet is not connected or on internet.
-    },
+    }
 );
 ```
 
@@ -120,6 +116,43 @@ shurjopaySdk.makePayment(
     context:    context,
     sdkType:    "sdk request type live or sandbox", //TODO live/sandbox request
     data:       requiredRequestData,
+);
+```
+
+### Response Listener Setup Extended:
+
+```git_response_listener_setup_extended
+// TODO request response listener setup
+ShurjopaySdk shurjopaySdk = ShurjopaySdk(
+    /// TODO you get success response, if the transection is succefully completed.
+    onSuccess: (BuildContext context, TransactionInfo? transactionInfo, ErrorSuccess errorSuccess) {
+        switch (errorSuccess.esType) {
+            case ESType.INTERNET_SUCCESS:
+                debugPrint("DEBUG_LOG_PRINT: surjoPay SDK SUCCESS: ${errorSuccess.message}");
+                break;
+            case ESType.SUCCESS:
+                debugPrint("DEBUG_LOG_PRINT: surjoPay SDK SUCCESS TransactionInfo:");
+                transactionInfo?.onPrint();
+                break;
+        }
+        debugPrint("DEBUG_LOG_PRINT: surjoPay SDK SUCCESS: ${errorSuccess.esType.name}");
+    },
+
+    /// TODO you get failed response, if the transection is failed or canceled.
+    onFailed: (BuildContext context, ErrorSuccess errorSuccess) {
+        switch (errorSuccess.esType) {
+            case ESType.INTERNET_ERROR:
+                debugPrint("DEBUG_LOG_PRINT: surjoPay SDK ERROR: ${errorSuccess.message}");
+                break;
+            case ESType.HTTP_CANCEL:
+                debugPrint("DEBUG_LOG_PRINT: surjoPay SDK ERROR: ${errorSuccess.message}");
+                break;
+            case ESType.ERROR:
+                debugPrint("DEBUG_LOG_PRINT: surjoPay SDK ERROR: ${errorSuccess.message}");
+                break;
+        }
+        debugPrint("DEBUG_LOG_PRINT: surjoPay SDK ERROR: ${errorSuccess.message}");
+    },
 );
 ```
 
@@ -231,6 +264,41 @@ String? value2;
 String? value3;
 String? value4;
 ```
+## Flutter shurjoPay SDK v2 `Version` `<1.2.0`
 
+### Response Listener (`Version <1.2.0`):
+
+```git_response_listener_setup_old1
+// TODO response listener
+onSuccess:          (BuildContext context, TransactionInfo transactionInfo)
+onFailed:           (BuildContext context, String message)
+onInternetFailed:   (BuildContext context, String message)
+```
+### Response Listener Setup (`Version <1.2.0`):
+
+```git_response_listener_setup
+// TODO request response listener setup
+ShurjopaySdk shurjopaySdk = ShurjopaySdk(
+    onSuccess: (BuildContext context, TransactionInfo transactionInfo) {
+        // TODO you get success response, if the transection is succefully completed.
+    },
+    onFailed: (BuildContext context, String message) {
+        // TODO you get failed response, if the transection is failed or canceled.
+    },
+    onInternetFailed: (BuildContext context, String message) {
+        // TODO you get internet failed message, if the internet is not connected or on internet.
+    },
+);
+```
+### Payment Request Setup (`Version <1.2.0`):
+
+```git_payment_request_setup
+// TODO payment request setup
+shurjopaySdk.makePayment(
+    context:    context,
+    sdkType:    "sdk request type live or sandbox", //TODO live/sandbox request
+    data:       requiredRequestData,
+);
+```
 
 Flutter shurjoPay SDK v2
